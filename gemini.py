@@ -1,6 +1,7 @@
 import google.generativeai as genai
 import discord
 import os
+import json
 
 def init_gemini():
     # 環境変数の取得

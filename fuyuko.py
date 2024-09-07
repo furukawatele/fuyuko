@@ -6,12 +6,14 @@ import requests
 import time
 import gemini
 import utils
+import dotenv
 
 # 設定ファイルの読み込み
 json_file = open('settings.json', 'r')
 json_data = json.load(json_file)
 
-
+# 環境変数を読み込む
+load_dotenv()
 # discordトークンの取得
 TOKEN = os.environ['DISCORD_TOKEN']
 # いろいろ取得
@@ -55,7 +57,7 @@ async def on_message(message):
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
         return
-   
+
     # ﾌﾕｺの部屋のメッセージに反応
     if message.channel.id == gemini_channel:
         # 送られたメッセージを取得
@@ -95,7 +97,7 @@ async def on_message(message):
                 if map1 != map2:
                     break
             await message.channel.send("やっぱり" + map2+ '!!!!!')
-    
+
     if message.content == '/stopserver':
         await message.channel.send('🦀========3サーバ止めるね！！')
         # サーバ停止
@@ -109,7 +111,7 @@ async def on_message(message):
             await message.channel.send('ふるぴ、おかね？ないんだってさ！！')
             await message.channel.send(file=discord.File(qrpath))
             return
-        
+
     # 雑談チャンネルにたまに顔を出す
     if message.channel.id == channel_id:
         if random.random() < 0.1:
@@ -117,10 +119,10 @@ async def on_message(message):
             #geminiに送信
             response = gemini.gemini_response(msg, gemini_pro)
             await message.channel.send(response.text)
-    
+
     # そらまめ対策
     if "sex" in message.content.lower():
         await message.channel.send('やめてね。')
-    
+
 # Botの起動とDiscordサーバーへの接続
 client.run(TOKEN)
