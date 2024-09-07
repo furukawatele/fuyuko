@@ -1,0 +1,8 @@
+{
+    "instance_id" : "i-07e2aece6f51b2948",
+    "start" : "https://c81wfbfbeg.execute-api.ap-northeast-1.amazonaws.com/default/Lambda_URL_start",
+    "stop" : "https://l63m6oofxi.execute-api.ap-northeast-1.amazonaws.com/default/lambda_URL_stop",
+    "gemini_channel" : 1276953057019826197,
+    "channel_id" : 1280250224891138178
+
+}
