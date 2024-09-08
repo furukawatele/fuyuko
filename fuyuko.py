@@ -6,13 +6,13 @@ import requests
 import time
 import gemini
 import utils
-import dotenv
+from dotenv import load_dotenv
 
 # 設定ファイルの読み込み
 json_file = open('settings.json', 'r')
 json_data = json.load(json_file)
 
-# 環境変数を読み込む
+# .envファイルを読み込む
 load_dotenv()
 # discordトークンの取得
 TOKEN = os.environ['DISCORD_TOKEN']
@@ -58,12 +58,28 @@ async def on_message(message):
     if message.author.bot:
         return
 
+    # 雑談チャンネルにたまに顔を出す
+    for message.channel.id in channel_id:
+        print("しゃべろうかな...")
+        if random.random() < 0.3:
+            msg = message.content
+            #geminiに送信
+            response = gemini.gemini_response(msg, gemini_pro)
+            if response.status_code == 429:
+                await message.channel.send('ごめん...ﾌﾕｺ今眠い...')
+                return
+            await message.channel.send(response.text)
+    print("やっぱいいや。。。")
+
     # ﾌﾕｺの部屋のメッセージに反応
     if message.channel.id == gemini_channel:
         # 送られたメッセージを取得
         msg = message.content
         #geminiに送信
         response = gemini.gemini_response(msg, gemini_pro)
+        if response.status_code == 429:
+            await message.channel.send('ごめん...ﾌﾕｺ今眠い...')
+            return
         await message.channel.send(response.text)
 
     # /startserver と発言したら サーバ起動のAPIを叩く
@@ -111,14 +127,6 @@ async def on_message(message):
             await message.channel.send('ふるぴ、おかね？ないんだってさ！！')
             await message.channel.send(file=discord.File(qrpath))
             return
-
-    # 雑談チャンネルにたまに顔を出す
-    if message.channel.id == channel_id:
-        if random.random() < 0.1:
-            msg = message.content
-            #geminiに送信
-            response = gemini.gemini_response(msg, gemini_pro)
-            await message.channel.send(response.text)
 
     # そらまめ対策
     if "sex" in message.content.lower():

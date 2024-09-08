@@ -15,8 +15,5 @@ def init_gemini():
     return gemini_pro
 
 def gemini_response(msg, gemini_pro):
-    try:
-        response = gemini_pro.generate_content(msg)
-    except ValueError as e:
-        response.text = "よくわかんない！！！"
+    response = gemini_pro.generate_content(msg)
     return response
