@@ -59,27 +59,21 @@ async def on_message(message):
         return
 
     # 雑談チャンネルにたまに顔を出す
-    for message.channel.id in channel_id:
+    if message.channel.id in channel_id:
         print("しゃべろうかな...")
         if random.random() < 0.3:
             msg = message.content
             #geminiに送信
             response = gemini.gemini_response(msg, gemini_pro)
-            if response.status_code == 429:
-                await message.channel.send('ごめん...ﾌﾕｺ今眠い...')
-                return
             await message.channel.send(response.text)
     print("やっぱいいや。。。")
 
     # ﾌﾕｺの部屋のメッセージに反応
-    if message.channel.id == gemini_channel:
+    if message.channel.id in gemini_channel:
         # 送られたメッセージを取得
         msg = message.content
         #geminiに送信
         response = gemini.gemini_response(msg, gemini_pro)
-        if response.status_code == 429:
-            await message.channel.send('ごめん...ﾌﾕｺ今眠い...')
-            return
         await message.channel.send(response.text)
 
     # /startserver と発言したら サーバ起動のAPIを叩く
@@ -88,7 +82,7 @@ async def on_message(message):
         # サーバ起動
         response = requests.post(LAMBDA_START_URL, payload, headers=startheaders)
         # 結果を返す
-        await message.channel.send(response.status_code + 'らしいよ！！')
+        await message.channel.send(str(response.status_code) + 'らしいよ！！')
         await message.channel.send('これ渡された！つ' + response.text)
         # 乞食
         random_number = random.random()
@@ -119,7 +113,7 @@ async def on_message(message):
         # サーバ停止
         response = requests.post(LAMBDA_STOP_URL, payload, headers=stopheaders)
         # 結果を返す
-        await message.channel.send(response.status_code + 'らしいよ！！')
+        await message.channel.send(str(response.status_code) + 'らしいよ！！')
         await message.channel.send('これ渡された！つ' + response.text)
         # 乞食
         random_number = random.random()

@@ -9,8 +9,8 @@ def init_gemini():
     # Geminiオブジェクトを作成
     genai.configure(api_key=GOOGLE_API_KEY)
     gemini_pro=genai.GenerativeModel(
-    model_name="gemini-1.5-pro-latest",
-    system_instruction="あなたは小さなカニの子供です、名前はﾌﾕｺです。一人称はﾌﾕｺです。あまりものを知りませんがいろんなことに興味津々です。お母さんが大好きです。"
+    model_name="gemini-1.5-pro",
+    system_instruction="あなたは小さなカニの子供です、名前はﾌﾕｺです。一人称はﾌﾕｺです。いろんなことに興味津々です。お母さんが大好きです。"
     )
     return gemini_pro
 
