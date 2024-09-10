@@ -61,12 +61,16 @@ async def on_message(message):
     # 雑談チャンネルにたまに顔を出す
     if message.channel.id in channel_id:
         print("しゃべろうかな...")
-        if random.random() < 0.3:
+        if random.random() < 0.1:
             msg = message.content
             #geminiに送信
             response = gemini.gemini_response(msg, gemini_pro)
+            if "error" in response.text:
+                await message.channel.send('ﾌﾕｺよくわかんない！！')
+                return
             await message.channel.send(response.text)
-    print("やっぱいいや。。。")
+            return
+        print("やっぱいいや。。。")
 
     # ﾌﾕｺの部屋のメッセージに反応
     if message.channel.id in gemini_channel:
@@ -74,6 +78,7 @@ async def on_message(message):
         msg = message.content
         #geminiに送信
         response = gemini.gemini_response(msg, gemini_pro)
+        # メッセージチャンネルに送信
         await message.channel.send(response.text)
 
     # /startserver と発言したら サーバ起動のAPIを叩く
@@ -100,7 +105,7 @@ async def on_message(message):
         map1 = utils.get_random_map()
         await message.channel.send("う～～ん" + map1 + '!!!!!')
         #たまにやっぱなしとかやる
-        if (random.random() < 0.9):
+        if (random.random() < 0.4):
             # かぶらないようにする
             while True:
                 map2 = utils.get_random_map()
@@ -117,7 +122,7 @@ async def on_message(message):
         await message.channel.send('これ渡された！つ' + response.text)
         # 乞食
         random_number = random.random()
-        if random_number < 0.3:
+        if random_number < 0.2:
             await message.channel.send('ふるぴ、おかね？ないんだってさ！！')
             await message.channel.send(file=discord.File(qrpath))
             return
