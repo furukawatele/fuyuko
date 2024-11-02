@@ -18,4 +18,7 @@ def sex_check(message):
     checklist = ['sex', 's3x', '𝑺𝑬𝑿', 'SEX', 'せっくす', 'セックス', 'Sex', 'sEx', 'seX', 'SEx', 'SeX', 'sEX']
     if message in checklist:
         return 1
+    for item in checklist:
+        if item in message:
+            return 1
     return 0
