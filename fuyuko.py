@@ -8,6 +8,8 @@ import gemini
 import utils
 from dotenv import load_dotenv
 
+from utils import sex_check
+
 # 設定ファイルの読み込み
 json_file = open('settings.json', 'r')
 json_data = json.load(json_file)
@@ -56,6 +58,12 @@ async def on_message(message):
 
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
+        return
+
+    # そらまめ対策
+    sexbool = sex_check(message.content)
+    if sexbool == 1:
+        await message.channel.send('やめてね')
         return
 
     # 雑談チャンネルにたまに顔を出す
@@ -126,10 +134,6 @@ async def on_message(message):
             await message.channel.send('ふるぴ、おかね？ないんだってさ！！')
             await message.channel.send(file=discord.File(qrpath))
             return
-
-    # そらまめ対策
-    if "sex" in message.content.lower():
-        await message.channel.send('やめてね。')
 
 # Botの起動とDiscordサーバーへの接続
 client.run(TOKEN)
